@@ -8,6 +8,6 @@ public class SandboxEveTest {
 
 	@Test
 	void name() throws IOException {
-		new ReactionsService().printStatus();
+		new ReactionsService(new ReactionsParser()).printStatus();
 	}
 }

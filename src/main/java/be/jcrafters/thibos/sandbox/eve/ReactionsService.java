@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.apache.commons.csv.CSVFormat;
@@ -16,13 +17,20 @@ import org.apache.commons.io.FileUtils;
 @Singleton
 public class ReactionsService {
 
+	ReactionsParser reactionsParser;
+
+	@Inject
+	public ReactionsService(ReactionsParser reactionsParser) {
+		this.reactionsParser = reactionsParser;
+	}
+
 	public void printStatus() throws IOException {
 		System.out.println("\nOWNED REACTIONS>\n-----------------");
-		List<Reaction> ownedReactions = read("src/test/resources/reactions-mine.csv");
+		List<Reaction> ownedReactions = read("src/main/resources/reactions-mine.csv");
 		ownedReactions.forEach(System.out::println);
 
 		System.out.println("\nREQUESTED REACTIONS>\n-----------------");
-		List<Reaction> requestedReactions = read("src/test/resources/reactions-requested.csv");
+		List<Reaction> requestedReactions = read("src/main/resources/reactions-requested.csv");
 		requestedReactions.forEach(System.out::println);
 
 		ArrayList<Reaction> neededReactions = new ArrayList<>(requestedReactions);
@@ -36,6 +44,7 @@ public class ReactionsService {
 
 		List<CSVRecord> records = CSVParser.parse(requestedReactionsCsv, StandardCharsets.UTF_8, CSVFormat.DEFAULT).getRecords();
 
-		return new ReactionsParser().parse(records);
+		reactionsParser = new ReactionsParser();
+		return reactionsParser.parse(records);
 	}
 }

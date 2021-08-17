@@ -6,10 +6,13 @@ public class SandboxEveTest {
 
 	@Test
 	void basicReactionsPrintStatus() throws Exception {
-		new ReactionsRestService(new ReactionsService(new ReactionsRepository(new DummyReactionsFileService()))).printStatus();
+		new ReactionsRestService(new ReactionsService(new ReactionsRepository(new DummyReactionsFileService(new ReactionsParser())))).printStatus();
 	}
 
-	private class DummyReactionsFileService extends ReactionsFileService {
+	private static class DummyReactionsFileService extends ReactionsFileService {
 
+		public DummyReactionsFileService(ReactionsParser reactionsParser) {
+			super(new ReactionsParser());
+		}
 	}
 }

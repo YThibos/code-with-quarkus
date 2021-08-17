@@ -12,7 +12,7 @@ import org.apache.commons.csv.CSVRecord;
 @Singleton
 public class ReactionsParser {
 
-	public List<CompositeReaction> parse(List<CSVRecord> in) {
+	public List<Reaction> parse(List<CSVRecord> in) {
 		return in.stream()
 				.flatMap(CSVRecord::stream)
 				.map(line -> line.split(";"))

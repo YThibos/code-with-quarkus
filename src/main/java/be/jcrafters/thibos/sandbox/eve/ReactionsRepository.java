@@ -21,7 +21,8 @@ public class ReactionsRepository {
 
 	@PostConstruct
 	public void postConstruct() {
-
+		reactionsFileService.loadAll();
+		requestedReactionFormulae.addAll(reactionsFileService.getRequestedFormulae());
 	}
 
 	public List<Reaction> getOwnedReactionFormulae() {

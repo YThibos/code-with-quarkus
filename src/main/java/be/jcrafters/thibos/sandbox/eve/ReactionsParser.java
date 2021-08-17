@@ -5,11 +5,14 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
+import javax.inject.Singleton;
+
 import org.apache.commons.csv.CSVRecord;
 
+@Singleton
 public class ReactionsParser {
 
-	public List<Reaction> parse(List<CSVRecord> in) {
+	public List<CompositeReaction> parse(List<CSVRecord> in) {
 		return in.stream()
 				.flatMap(CSVRecord::stream)
 				.map(line -> line.split(";"))
@@ -17,7 +20,7 @@ public class ReactionsParser {
 				.collect(toList());
 	}
 
-	private Reaction toReaction(String[] values) {
-		return new Reaction(parseLong(values[0]), values[1]);
+	private CompositeReaction toReaction(String[] values) {
+		return new CompositeReaction(parseLong(values[0]), values[1]);
 	}
 }

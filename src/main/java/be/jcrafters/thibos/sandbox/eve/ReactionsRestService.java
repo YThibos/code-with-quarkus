@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toMap;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,13 +31,13 @@ public class ReactionsRestService {
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String printStatus() throws Exception {
+	public String printInventory() throws Exception {
 
 		LOGGER.info("Received GET request on /reactions");
 
 		List<Reaction> ownedReactionFormulae = findOwnedReactionFormulae();
 		Map<Long, Reaction> ownedReactionFormulaeById = ownedReactionFormulae.stream().collect(
-				toMap(Reaction::getId, Function.identity())
+				toMap(r -> new Random().nextLong(), Function.identity())
 		);
 
 		List<Reaction> requestedReactionFormulae = findRequestedReactionFormulae();
@@ -50,24 +51,24 @@ public class ReactionsRestService {
 				toMap(Reaction::getId, Function.identity())
 		);
 
-		return "#OWNED FORMULAE\n" +
+		return "#" + Ownership.OWNED.name() + "\n" +
 			   ownedReactionFormulaeById.entrySet().stream().map(entry -> entry.getKey() + ";" + entry.getValue() + "\n").collect(Collectors.joining("\n")) +
-			   "#REQUESTED FORMULAE\n" +
+			   "#" + Ownership.REQUESTED.name() + "\n" +
 			   requestedReactionFormulaeById.entrySet().stream().map(entry -> entry.getKey() + ";" + entry.getValue() + "\n").collect(Collectors.joining("\n")) +
-			   "#NEEDED FORMULAE\n" +
+			   "#" + Ownership.NEEDED.name() + "\n" +
 			   neededReactionFormulaeById.entrySet().stream().map(entry -> entry.getKey() + ";" + entry.getValue() + "\n").collect(Collectors.joining("\n"));
 	}
 
-	private List<Reaction> compileNeededReactionFormulae() {
-		return reactionsService.compileNeededReactionFormulae();
+	public List<Reaction> findOwnedReactionFormulae() {
+		return reactionsService.findOwnedReactions();
 	}
 
 	private List<Reaction> findRequestedReactionFormulae() {
 		return reactionsService.findRequestedReactions();
 	}
 
-	public List<Reaction> findOwnedReactionFormulae() {
-		return reactionsService.findOwnedReactions();
+	private List<Reaction> compileNeededReactionFormulae() {
+		return reactionsService.compileNeededReactionFormulae();
 	}
 
 }

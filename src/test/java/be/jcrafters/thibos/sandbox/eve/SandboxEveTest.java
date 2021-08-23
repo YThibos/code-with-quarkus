@@ -6,7 +6,7 @@ public class SandboxEveTest {
 
 	@Test
 	void basicReactionsPrintStatus() throws Exception {
-		new ReactionsRestService(new ReactionsService(new ReactionsRepository(new DummyReactionsFileService(new ReactionsParser())))).printStatus();
+		new ReactionsRestService(new ReactionsService(new ReactionsRepository(new ReactionsFileService(new ReactionsParser())))).printInventory();
 	}
 
 	private static class DummyReactionsFileService extends ReactionsFileService {

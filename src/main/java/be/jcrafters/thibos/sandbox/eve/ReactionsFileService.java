@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Singleton;
 
 import org.apache.commons.csv.CSVFormat;
@@ -28,7 +29,13 @@ public class ReactionsFileService {
 		this.reactionsParser = reactionsParser;
 	}
 
+	@PostConstruct
+	public void postConstruct() {
+		loadAll();
+	}
+
 	public Map<Ownership, List<Reaction>> loadAll() {
+		LOGGER.info("Loading all formulae info files..");
 		List<Reaction> ownedFormulae = loadOwnedFile();
 		List<Reaction> requestedReactions = loadRequestsFile();
 

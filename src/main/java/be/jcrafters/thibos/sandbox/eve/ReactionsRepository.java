@@ -2,27 +2,23 @@ package be.jcrafters.thibos.sandbox.eve;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class ReactionsRepository {
+
 	private List<Reaction> requestedReactionFormulae = new ArrayList<>();
 	private List<Reaction> ownedReactionFormulae = new ArrayList<>();
 
-	private ReactionsFileService reactionsFileService;
-
 	@Inject
 	public ReactionsRepository(ReactionsFileService reactionsFileService) {
-		this.reactionsFileService = reactionsFileService;
-	}
+		Map<Ownership, List<Reaction>> reactionsByOwnership = reactionsFileService.loadAll();
 
-	@PostConstruct
-	public void postConstruct() {
-		reactionsFileService.loadAll();
-		requestedReactionFormulae.addAll(reactionsFileService.getRequestedFormulae());
+		ownedReactionFormulae.addAll(reactionsByOwnership.get(Ownership.OWNED));
+		requestedReactionFormulae.addAll(reactionsByOwnership.get(Ownership.REQUESTED));
 	}
 
 	public List<Reaction> getOwnedReactionFormulae() {

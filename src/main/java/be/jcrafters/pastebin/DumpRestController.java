@@ -6,8 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/pastebin")
-public class GreetingResource {
+@Path("/dump")
+public class DumpRestController {
 
     @POST
     @Consumes(MediaType.TEXT_PLAIN)

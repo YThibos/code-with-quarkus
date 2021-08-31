@@ -1,4 +1,4 @@
-greeting:
-  message: "Your dump: \n"
-
-
+quarkus:
+  log:
+    level: INFO
+    min-level: INFO
